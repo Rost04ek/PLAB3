@@ -37,7 +37,7 @@ def consume_lazy_pipeline(path: Path):
     return count_task_statuses(pipeline)
 
 def main():
-    test_file = Path("data/tasks_100k.csv")
+    test_file = Path("data/tasks_500k.csv")
     
     if not test_file.exists():
         print(f"Файл {test_file} не знайдено! Запусти generate_data.py")
