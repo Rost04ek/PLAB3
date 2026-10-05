@@ -4,11 +4,12 @@ from stream_processor.models import TaskRecord
 from stream_processor.readers import read_lines
 from stream_processor.parsers import parse_csv_rows
 from stream_processor.filters import validate_tasks, lazy_search
+from stream_processor.readers import read_lines, clean_lines
 
 def build_base_pipeline(path: Path) -> Iterator[TaskRecord]:
-    """Будує базовий конвеєр (читання -> парсинг -> валідація)."""
     lines = read_lines(path)
-    rows = parse_csv_rows(lines)
+    cleaned = clean_lines(lines)
+    rows = parse_csv_rows(cleaned)
     valid_tasks = validate_tasks(rows)
     return valid_tasks
 
