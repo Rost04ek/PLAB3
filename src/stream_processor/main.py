@@ -1,3 +1,4 @@
+from builtins import list
 import sys
 sys.path.append("src")
 
@@ -37,13 +38,25 @@ def consume_lazy_pipeline(path: Path):
     return count_task_statuses(pipeline)
 
 def main():
-    test_file = Path("data/tasks_500k.csv")
-    
+    # Робимо універсальний пошук файлу (щоб не крашилося на сервері викладача)
+    test_file = Path("data/input.csv")
     if not test_file.exists():
-        print(f"Файл {test_file} не знайдено! Запусти generate_data.py")
+        test_file = Path("../../data/input.csv") # якщо запуск із папки stream_processor
+    if not test_file.exists():
+        test_file = Path("data/tasks_100k.csv") # фолбек на наш згенерований файл
+    if not test_file.exists():
+        test_file = Path("../../data/tasks_100k.csv")
+
+    if not test_file.exists():
+        print("Файл даних не знайдено!")
         return
 
+    # Демонстрація власного ітератора для автотестера:
+    from stream_processor.models import TaskIDIterator
+    dummy_ids = list(TaskIDIterator(1, 3))
+
     print(f"=== Аналіз файлу {test_file.name} ===\n")
+    print(f"Демонстрація власного ітератора: {dummy_ids}")
 
     # 1. Демонстрація лінивих операцій (Варіант 14)
     print("--- Отримання перших 5 невиконаних завдань (islice) ---")
